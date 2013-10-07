@@ -28,13 +28,13 @@
 
 module.exports.routes = {
 
-  // By default, your root route (aka home page) points to a view
-  // located at `views/home/index.ejs`
-  // 
-  // (This would also work if you had a file at: `/views/home.ejs`)
-  '/': {
-    view: 'home/index'
-  }
+	'/': {
+		controller: 'home'
+	},
+
+	'get /todo': 'TodoController.index',
+	'post /todo': 'TodoController.create',
+	'delete /todo/:id': 'TodoController.destroy'
 
   /*
   // But what if you want your home page to display

@@ -4,7 +4,7 @@ do ($ = jQuery, window) ->
 			content = $('<div/>').text(content).html()
 			el = $('<tr></tr>')
 			el.attr 'data-todo-id', id
-			el.append $('<td></td>').html("#{content} <div class=\"pull-right\"><a href=\"#\" data-todo-id=\"#{id}\" class=\"delete-todo glyphicon glyphicon-trash\"></span></div>")
+			el.append $('<td></td>').html("#{content} <div class=\"pull-right\"><a href=\"#\" data-todo-id=\"#{id}\" class=\"delete-todo glyphicon glyphicon-trash btn btn-danger\"> </a></div>")
 
 			$('#todos tbody').append el
 

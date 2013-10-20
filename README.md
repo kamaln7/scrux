@@ -1,3 +1,6 @@
+### Warning
+This branch contains non-functional Sails.js code.
+
 scrux
 =====
 

@@ -1,4 +1,4 @@
-controller =
+controller = (app) ->
 	getIndex: (req, res) ->
 		res.render 'index', {
 			page: 'Home'

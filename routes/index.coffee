@@ -1,12 +1,11 @@
-app = require('express')()
+routes = (app) ->
+	# Load middlewares
+	middlewares = app.get 'middlewares'
 
-# Load middlewares
-middlewares = require('./middlewares')
+	# Load controllers
+	HomeController = require('../controllers/HomeController')(app);
 
-# Load controllers
-HomeController = require('../controllers/HomeController');
+	# Define routes
+	app.get '/', HomeController.getIndex
 
-# Define routes
-app.get '/', HomeController.getIndex
-
-module.exports = app
+module.exports = routes

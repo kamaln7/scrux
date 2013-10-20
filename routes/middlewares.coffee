@@ -1,12 +1,21 @@
-middlewares =
-	loggedIn: (req, res, next) ->
-		if req.session.userId?
-			res.locals.user =
-				username: 'temp'
-				email: 'temp@temp.com'
-		else
-			res.locals.user = false
+middlewares = (app) ->
+	return {
+		loggedIn: (req, res, next) ->
+			res.locals.user = 'derp'
+			next()
+			return null
 
-		next()
+			if false
+				User = require('../models/User')(app)
+				res.locals.user ->
+					return {
+						username: 'temp',
+						email: 'temp@temp.com'
+					}
+			else
+				res.locals.user = 'derp'
+
+			next()
+	}
 
 module.exports = middlewares

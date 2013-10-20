@@ -3,8 +3,6 @@ http = require 'http'
 path = require 'path'
 
 app = express()
-middlewares = require('./routes/middlewares')
-routes = require('./routes')
 config = require('./config')
 
 app.configure ->
@@ -32,9 +30,15 @@ app.configure 'production', ->
 	app.disable 'x-powered-by'
 	null
 
+
+middlewares = require('./routes/middlewares')(app)
+
+app.set 'middlewares', middlewares
+app.set 'database', require('./database')(config)
+
 app.use middlewares.loggedIn
 
-app.use routes
+require('./routes')(app)
 
 http.createServer(app).listen (app.get 'port'), ->
 	console.log 'Scrux listening on port ' + app.get 'port'

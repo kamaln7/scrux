@@ -1,0 +1,23 @@
+{
+  "name": "scrux",
+  "description": "A node.js to-do list app",
+  "version": "0.0.1",
+  "author": "Kamal Nasser <kamal@kamalnasser.net>",
+  "private": true,
+  "scripts": {
+    "start": "coffee app.coffee"
+  },
+  "dependencies": {
+    "express": "3.4.0",
+    "ejs": "*",
+    "stylus": "*"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/KamalN7/scrux.git"
+  },
+  "license": "MIT",
+  "engines": {
+      "node": ">=0.10.15"
+  }
+}

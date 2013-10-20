@@ -1,8 +1,12 @@
 app = require('express')()
 
-app.get '/', (req, res) ->
-	res.render 'index', {
-		title: 'scrux'
-	}
+# Load middlewares
+middlewares = require('./middlewares')
+
+# Load controllers
+HomeController = require('../controllers/HomeController');
+
+# Define routes
+app.get '/', HomeController.getIndex
 
 module.exports = app

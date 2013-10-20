@@ -3,17 +3,23 @@ http = require 'http'
 path = require 'path'
 
 app = express()
+middlewares = require('./routes/middlewares')
+routes = require('./routes')
+config = require('./config')
 
 app.configure ->
-	app.set 'port', process.env.PORT || 3000
+	app.set 'port', config.port || 3000
 	app.set 'views', __dirname + '/views'
 	app.set 'view engine', 'ejs'
+	app.use require('express-partials')()
 	app.use express.favicon()
 	app.use express.logger()
 	app.use express.bodyParser()
 	app.use express.methodOverride()
+	app.use express.cookieParser(config.secret)
+	app.use express.session()
 	app.use app.router
-	app.use require('stylus').middleware __dirname + '/public'
+	app.use require('connect-assets')()
 	app.use express.static(path.join __dirname, 'public')
 	null
 
@@ -26,7 +32,9 @@ app.configure 'production', ->
 	app.disable 'x-powered-by'
 	null
 
-app.use require('./routes')
+app.use middlewares.loggedIn
+
+app.use routes
 
 http.createServer(app).listen (app.get 'port'), ->
 	console.log 'Scrux listening on port ' + app.get 'port'

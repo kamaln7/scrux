@@ -1,0 +1,26 @@
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Scrux</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li<% if(page == 'Home'){ %> class="active"<% } %>><a href="/">Home</a></li>
+                <li<% if(page == 'Todos'){ %> class="active"<% } %>><a href="/todos">Todos</a></li>
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <% if(user){ %>
+                    <li><a href="/account/logout">Logout</a></li>
+                <% } else { %>
+                    <li<% if(page == 'Login'){ %> class="active"<% } %>><a href="/account/login">Login</a></li>
+                    <li<% if(page == 'Register'){ %> class="active"<% } %>><a href="/account/register">Register</a></li>
+                <% } %>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>

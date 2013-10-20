@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%- page %> | Scrux</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="//fetch.assetrepo.net/bootstrap.min.css">
+    <%- css('app') %>
+</head>
+
+<body>
+<%- include layout/nav %>
+<div class="container">
+    <%- body %>
+</div>
+<div class="container">
+    <footer>
+        <%- include layout/footer %>
+    </footer>
+</div>
+
+<script src="//fetch.assetrepo.net/jquery.min.js"></script>
+<script src="//fetch.assetrepo.net/bootstrap.min.js"></script>
+<%- js('app') %>
+</body>
+</html>

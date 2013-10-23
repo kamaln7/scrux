@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-offset-2 col-md-8 col-sm12 col-sm-offset-0">
+        <h3 class="title-divider">
+            <span>Todos</span>
+        </h3>
+        <hr/>
+        <% if (err) { %>
+            <div class="alert alert-danger"><%= err %></div>
+        <% } %>
+        <div id="error" class="alert alert-danger" style="display: none"></div>
+        <form action="/todos/create" method="post" id="newTodoItem">
+            <div class="input-group">
+                <input type="text" id="newTodoItemContent" class="form-control" placeholder="Buy milk">
+                <span class="input-group-btn">
+                    <input class="btn btn-default btn-success" type="submit" value="Add">
+                </span>
+            </div>
+        </form>
+        <br/>
+        <table id="todos" class="table table-bordered table-striped">
+            <tbody>
+                <% for (var i = 0; i < todos.length; i++) { %>
+                    <tr data-todo-id="<%= todos[i]._id %>">
+                        <td>
+                            <span class="col-md-11"><%= todos[i].content %></span><span class="col-md-1 pull-right"><a href="#" class="delete-todo glyphicon glyphicon-trash btn btn-danger"> </a></span>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

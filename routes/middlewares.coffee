@@ -16,7 +16,7 @@ middlewares =
 		if req.session.userId?
 			next()
 		else
-			res.redirect '/'
+			res.redirect '/account/login'
 
 	loggedOut: (req, res, next) ->
 		if req.session.userId?

@@ -1,10 +1,11 @@
-express = require 'express'
 http = require 'http'
 path = require 'path'
 
+express = require 'express'
 app = express()
-config = require './config'
+MongoStore = require('connect-mongo') express
 
+config = require './config'
 middlewares = require './routes/middlewares'
 routes = require './routes'
 database = require './database'
@@ -19,8 +20,13 @@ app.configure ->
 	app.use express.bodyParser()
 	app.use require('express-validator')()
 	app.use express.methodOverride()
-	app.use express.cookieParser(config.secret)
-	app.use express.session()
+	app.use express.cookieParser()
+	app.use express.session {
+		secret: config.secret
+		store: new MongoStore {
+			mongoose_connection: database.connections[0]
+		}
+	}
 	app.use require('connect-flash')()
 	app.use require('connect-assets')()
 	app.use express.static(path.join __dirname, 'public')

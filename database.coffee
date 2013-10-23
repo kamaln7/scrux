@@ -1,5 +1,4 @@
 fs = require 'fs'
-path = require 'path'
 mongoose = require 'mongoose'
 config = require './config'
 

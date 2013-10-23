@@ -3,7 +3,11 @@ http = require 'http'
 path = require 'path'
 
 app = express()
-config = require('./config')
+config = require './config'
+
+middlewares = require './routes/middlewares'
+routes = require './routes'
+database = require './database'
 
 app.configure ->
 	app.set 'port', config.port || 3000
@@ -13,12 +17,14 @@ app.configure ->
 	app.use express.favicon()
 	app.use express.logger()
 	app.use express.bodyParser()
+	app.use require('express-validator')()
 	app.use express.methodOverride()
 	app.use express.cookieParser(config.secret)
 	app.use express.session()
-	app.use app.router
+	app.use require('connect-flash')()
 	app.use require('connect-assets')()
 	app.use express.static(path.join __dirname, 'public')
+	app.use app.router
 	null
 
 app.configure 'development', ->
@@ -30,15 +36,9 @@ app.configure 'production', ->
 	app.disable 'x-powered-by'
 	null
 
+app.use middlewares.userLocale
 
-middlewares = require('./routes/middlewares')(app)
-
-app.set 'middlewares', middlewares
-app.set 'database', require('./database')(config)
-
-app.use middlewares.loggedIn
-
-require('./routes')(app)
+app.use routes
 
 http.createServer(app).listen (app.get 'port'), ->
 	console.log 'Scrux listening on port ' + app.get 'port'

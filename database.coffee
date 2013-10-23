@@ -1,7 +1,14 @@
-database = (config) ->
-	mongoose = require('mongoose')
-	mongoose.connect(config.database.url)
+fs = require 'fs'
+path = require 'path'
+mongoose = require 'mongoose'
+config = require './config'
 
-	return mongoose
+mongoose.connect(config.database.url)
 
-module.exports = database
+
+fs.readdir './models', (err, files) ->
+	files.forEach (file) ->
+		if ~file.indexOf '.coffee'
+			require './models/' + file
+
+module.exports = mongoose

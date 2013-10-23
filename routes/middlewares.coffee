@@ -1,21 +1,27 @@
-middlewares = (app) ->
-	return {
-		loggedIn: (req, res, next) ->
-			res.locals.user = 'derp'
-			next()
-			return null
+middlewares =
+	userLocale: (req, res, next) ->
+		if req.session.userId?
+			User = require '../models/User'
+			res.locals.user = ->
+				return {
+					username: 'temp',
+					email: 'temp@temp.com'
+				}
+		else
+			res.locals.user = false
 
-			if false
-				User = require('../models/User')(app)
-				res.locals.user ->
-					return {
-						username: 'temp',
-						email: 'temp@temp.com'
-					}
-			else
-				res.locals.user = 'derp'
+		next()
 
+	loggedIn: (req, res, next) ->
+		if req.session.userId?
 			next()
-	}
+		else
+			res.redirect '/'
+
+	loggedOut: (req, res, next) ->
+		if req.session.userId?
+			res.redirect '/'
+		else
+			next()
 
 module.exports = middlewares

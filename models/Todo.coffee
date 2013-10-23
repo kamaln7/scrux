@@ -4,7 +4,7 @@ bcrypt = require 'bcrypt'
 ObjectId = mongoose.Schema.ObjectId
 
 todoSchema = mongoose.Schema {
-	user_id: ObjectId
+	_userId: ObjectId
 	content: String
 	completed:
 		type: Boolean

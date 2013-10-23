@@ -4,7 +4,7 @@ do ($ = jQuery) ->
 		content = $('<div/>').text(content).html()
 		el = $('<tr></tr>')
 		el.attr 'data-todo-id', id
-		el.append $('<td></td>').html("<span class=\"col-md-11\">#{content}</span><span class=\"col-md-1 pull-right\"><a href=\"#\" class=\"delete-todo glyphicon glyphicon-trash btn btn-danger\"> </a></span>")
+		el.append $('<td></td>').html("<span class=\"col-md-10\">#{content}</span><span class=\"col-md-2 pull-right\"><a href=\"#\" class=\"toggle-completed-todo glyphicon glyphicon-ok btn btn-success\"> </a> <a href=\"#\" class=\"delete-todo glyphicon glyphicon-trash btn btn-danger\"> </a></span>")
 
 		$('#todos tbody').append el
 
@@ -33,7 +33,26 @@ do ($ = jQuery) ->
 
 		false
 
-	$('#todos tbody a.delete-todo').on 'click', (e) ->
+	$('#todos tbody').delegate 'a.toggle-completed-todo', 'click', (e) ->
+		e.preventDefault()
+
+		tr = $(this).parent().parent().parent()
+		contentSpan = $(this).parent().parent().children('.col-md-10')
+		oldStatus = contentSpan.hasClass 'todo-completed'
+		id = tr.data 'todo-id'
+
+		$.ajax {
+			url: "/todos/#{id}"
+			type: 'PUT'
+			data: {
+				completed: !oldStatus
+			}
+			success: =>
+				contentSpan.toggleClass 'todo-completed'
+				$(this).toggleClass('glyphicon-repeat').toggleClass('glyphicon-ok').toggleClass('btn-success').toggleClass('btn-info')
+		}
+
+	$('#todos tbody').delegate 'a.delete-todo', 'click', (e) ->
 		e.preventDefault()
 
 		tr = $(this).parent().parent().parent()

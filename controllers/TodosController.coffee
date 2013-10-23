@@ -5,7 +5,8 @@ controller =
 	getIndex: (req, res) ->
 		Todo = mongoose.model 'Todo'
 		Todo.find {
-			user_id: ObjectId req.session.userId
+			_userId: req.session.userId
+			active: true
 		}, (err, todos) ->
 			res.render 'todos/index', {
 				page: 'Todos'
@@ -16,7 +17,7 @@ controller =
 	postIndex: (req, res) ->
 		input = req.body
 
-		req.checkBody('content', 'Invalid todo content').notEmpty().min(5)
+		req.checkBody('content', 'Invalid todo content').notEmpty().min(1)
 
 		errors = req.validationErrors()
 
@@ -28,7 +29,7 @@ controller =
 
 		Todo = mongoose.model 'Todo'
 		todo = new Todo {
-			user_id: ObjectId req.session.userId
+			_userId: req.session.userId
 			content: input.content
 		}
 
@@ -45,8 +46,39 @@ controller =
 				}
 
 	putTodo: (req, res) ->
-		input = req.body
-		#// TODO: Update todo
+		update = {}
+
+		if req.body.completed?
+			req.sanitize('completed').toBooleanStrict()
+			update.completed = req.body.completed
+
+		if req.body.content?
+			req.checkBody('content', 'Invalid todo content').notEmpty().min(1)
+			update.content = req.body.content
+
+		errors = req.validationErrors()
+
+		if errors
+			res.status 400
+			res.json errors
+			return
+
+		Todo = mongoose.model 'Todo'
+		Todo.update {
+			_id: req.params.id
+			_userId: req.session.userId
+			active: true
+		}, {
+			$set: update
+		}, (err, numAffected) ->
+			if err?
+				res.status 500
+			else if numAffected is 0
+				res.status 404
+			else
+				res.status 200
+
+			res.end()
 
 	deleteTodo: (req, res) ->
 		_id = req.params.id
@@ -56,13 +88,18 @@ controller =
 			res.end()
 
 		Todo = mongoose.model 'Todo'
-		Todo.remove {
-			user_id: ObjectId req.session.userId
+		Todo.update {
+			_userId: req.session.userId
 			_id: _id
-		}, (err, numRemoved) ->
+			active: true
+		}, {
+			$set: {
+				active: false
+			}
+		}, (err, numAffected) ->
 			if err?
 				res.status 500
-			else if numRemoved is 0
+			else if numAffected is 0
 				res.status 404
 			else
 				res.status 200

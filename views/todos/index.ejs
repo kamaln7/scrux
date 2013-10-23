@@ -19,13 +19,16 @@
         <br/>
         <table id="todos" class="table table-bordered table-striped">
             <tbody>
-                <% for (var i = 0; i < todos.length; i++) { %>
-                    <tr data-todo-id="<%= todos[i]._id %>">
-                        <td>
-                            <span class="col-md-11"><%= todos[i].content %></span><span class="col-md-1 pull-right"><a href="#" class="delete-todo glyphicon glyphicon-trash btn btn-danger"> </a></span>
-                        </td>
-                    </tr>
-                <% } %>
+                <%
+                if (!err && todos) {
+                    for (var i = 0; i < todos.length; i++) { %>
+                        <tr data-todo-id="<%= todos[i]._id %>">
+                            <td>
+                                <span class="col-md-10<% if(todos[i].completed){ %> todo-completed<% } %>"><%= todos[i].content %></span><span class="col-md-2 pull-right"><a href="#" class="toggle-completed-todo glyphicon<% if(todos[i].completed) { %> glyphicon-repeat btn-info<% } else { %> glyphicon-ok btn-success<% } %> btn"> </a> <a href="#" class="delete-todo glyphicon glyphicon-trash btn btn-danger"> </a></span>
+                            </td>
+                        </tr>
+                    <% }
+                } %>
             </tbody>
         </table>
     </div>

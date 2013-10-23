@@ -32,7 +32,6 @@ controller =
 					return
 
 				bcrypt.compare input.password, user.hashed_password, (err, result) ->
-					console.log err, result
 					if err?
 						error = 'An unknown error occurred.'
 					else if not result

@@ -1,12 +1,7 @@
 middlewares =
 	userLocale: (req, res, next) ->
 		if req.session.userId?
-			User = require '../models/User'
-			res.locals.user = ->
-				return {
-					username: 'temp',
-					email: 'temp@temp.com'
-				}
+			res.locals.user = req.session.userId
 		else
 			res.locals.user = false
 

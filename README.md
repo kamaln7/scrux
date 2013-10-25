@@ -1,4 +1,4 @@
 scrux
 =====
 
-A node.js to-do list app in Sails.js and CoffeeScript
+A node.js to-do list app in Expressjs and CoffeeScript

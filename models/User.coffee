@@ -1,11 +1,16 @@
 mongoose = require 'mongoose'
-troop = require 'mongoose-troop'
 bcrypt = require 'bcrypt'
 
 userSchema = mongoose.Schema {
 	username: String
 	hashed_password: String
 	email: String
+	createdAt:
+		type: Date
+		default: Date.now
+	updatedAt:
+		type: Date
+		default: Date.now
 }
 
 userSchema.methods.setPassword = (password, cb) ->
@@ -17,8 +22,4 @@ userSchema.methods.setPassword = (password, cb) ->
 		@hashed_password = hash
 		cb(null)
 
-userSchema.plugin troop.timestamp
-
-User = mongoose.model 'User', userSchema
-
-module.exports = User
+module.exports = mongoose.model 'User', userSchema

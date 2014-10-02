@@ -13,13 +13,21 @@ userSchema = mongoose.Schema {
 		default: Date.now
 }
 
-userSchema.methods.setPassword = (password, cb) ->
-	bcrypt.hash password, 10, (err, hash) =>
-		if err?
-			cb(err)
-			return
-
-		@hashed_password = hash
-		cb(null)
+user.pre 'save', (next) ->
+	user = this
+	
+	if !user.isModiefied 'password'
+		next()
+		
+	bcrypt.genSalt(10, (err, salt) ->
+		if err
+			next(err)
+		
+		bcrypt.hash(user.password, salt, (err, hash) ->
+			if err
+				next(err)
+				
+			user.password = hash
+			next()
 
 module.exports = mongoose.model 'User', userSchema

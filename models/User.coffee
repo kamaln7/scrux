@@ -1,24 +1,33 @@
 mongoose = require 'mongoose'
-troop = require 'mongoose-troop'
 bcrypt = require 'bcrypt'
 
 userSchema = mongoose.Schema {
 	username: String
 	hashed_password: String
 	email: String
+	createdAt:
+		type: Date
+		default: Date.now
+	updatedAt:
+		type: Date
+		default: Date.now
 }
 
-userSchema.methods.setPassword = (password, cb) ->
-	bcrypt.hash password, 10, (err, hash) =>
-		if err?
-			cb(err)
-			return
+user.pre 'save', (next) ->
+	user = this
+	
+	if !user.isModiefied 'password'
+		next()
+		
+	bcrypt.genSalt(10, (err, salt) ->
+		if err
+			next(err)
+		
+		bcrypt.hash(user.password, salt, (err, hash) ->
+			if err
+				next(err)
+				
+			user.password = hash
+			next()
 
-		@hashed_password = hash
-		cb(null)
-
-userSchema.plugin troop.timestamp
-
-User = mongoose.model 'User', userSchema
-
-module.exports = User
+module.exports = mongoose.model 'User', userSchema

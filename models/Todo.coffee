@@ -1,5 +1,4 @@
 mongoose = require 'mongoose'
-troop = require 'mongoose-troop'
 bcrypt = require 'bcrypt'
 ObjectId = mongoose.Schema.ObjectId
 
@@ -12,10 +11,12 @@ todoSchema = mongoose.Schema {
 	active:
 		type: Boolean
 		default: true
+	createdAt:
+		type: Date
+		default: Date.now
+	updatedAt:
+		type: Date
+		default: Date.now
 }
 
-todoSchema.plugin troop.timestamp
-
-Todo = mongoose.model 'Todo', todoSchema
-
-module.exports = Todo
+module.exports = mongoose.model 'Todo', todoSchema

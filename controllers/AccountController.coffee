@@ -80,20 +80,15 @@ controller =
 				user = new User
 				user.username = input.username
 				user.email = input.email
-				user.setPassword input.password, (err) ->
+				user.password = input.password
+
+				user.save (err, user) ->
 					if err?
 						req.flash 'errors', [{ msg: 'An unknown error occurred.' }]
 						res.redirect req.url
 						return
 
-					user.save (err) ->
-						if err?
-							req.flash 'errors', [{ msg: 'An unknown error occurred.' }]
-							res.redirect req.url
-							return
-
-						req.session.userId = user._id
-						res.redirect '/'
-
+					req.session.userId = user._id
+					res.redirect '/'
 
 module.exports = controller;
